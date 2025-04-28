@@ -15,17 +15,24 @@ function getComputerChoice() {
     }
   }
   
-  console.log("Computer picked:", getComputerChoice());
 
 
 
   function getHumanChoice() {
-    const choice = prompt("Enter rock, paper, or scissors:");
-    return choice.toLowerCase();
-  }
+    let choice;
+    while (true) {
+        choice = prompt("Enter rock, paper, or scissors:");
+        if (!choice) continue;
+        choice = choice.toLowerCase();
+        if (choice === "rock" || choice === "paper" || choice === "scissors") {
+            return choice;
+        }
+        alert("Invalid choice! Please enter rock, paper, or scissors.");
+    }
+}
+
 
   function playRound(humanChoice, computerChoice) {
-    humanChoice = humanChoice.toLowerCase();
   
     if (humanChoice === computerChoice) {
       console.log("It's a tie!");
