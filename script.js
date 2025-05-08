@@ -1,80 +1,81 @@
 let humanScore = 0;
 let computerScore = 0;
 
-
+const resultsDiv = document.getElementById("results");
+const scoreDiv = document.getElementById("score");
 
 function getComputerChoice() {
-    const randomNumber = Math.random();
-  
-    if (randomNumber < 0.33) {
-      return "rock";
-    } else if (randomNumber < 0.66) {
-      return "paper";
-    } else {
-      return "scissors";
-    }
+  const choices = ["rock", "paper", "scissors"];
+  const randomIndex = Math.floor(Math.random() * choices.length);
+  return choices[randomIndex];
   }
   
 
-
-
-  function getHumanChoice() {
-    let choice;
-    while (true) {
-        choice = prompt("Enter rock, paper, or scissors:");
-        if (!choice) continue;
-        choice = choice.toLowerCase();
-        if (choice === "rock" || choice === "paper" || choice === "scissors") {
-            return choice;
-        }
-        alert("Invalid choice! Please enter rock, paper, or scissors.");
-    }
-}
-
-
   function playRound(humanChoice, computerChoice) {
+    let message = "";
   
     if (humanChoice === computerChoice) {
-      console.log("It's a tie!");
+      message = `🤝 It's a tie! You both chose ${humanChoice}.`;
     } else if (
       (humanChoice === "rock" && computerChoice === "scissors") ||
       (humanChoice === "paper" && computerChoice === "rock") ||
       (humanChoice === "scissors" && computerChoice === "paper")
     ) {
-      console.log(`You win! ${humanChoice} beats ${computerChoice}`);
       humanScore++;
+      message = `✅ Nice! ${humanChoice} beats ${computerChoice}. You win this round.`;
     } else {
-      console.log(`You lose! ${computerChoice} beats ${humanChoice}`);
       computerScore++;
+      message = `❌ Oops! ${computerChoice} beats ${humanChoice}. You lost this round.`;
+    }
+  
+ 
+    resultsDiv.textContent = message;
+  
+ 
+    scoreDiv.textContent = `📊 Score — You: ${humanScore} | Computer: ${computerScore}`;
+  
+    if (humanScore === 5 || computerScore === 5) {
+      const finalMessage =
+        humanScore === 5
+          ? "🏆 Game Over: You conquered the machine!"
+          : "💻 Game Over: The computer outplayed you this time.";
+      resultsDiv.textContent += ` ${finalMessage}`;
+      disableButtons();
     }
   }
 
-  function playGame() {
-    
-    humanScore = 0;
-    computerScore = 0;
-  
-    for (let round = 1; round <= 5; round++) {
-      console.log(`Round ${round}:`);
-      const humanSelection = getHumanChoice();
-      const computerSelection = getComputerChoice();
-      playRound(humanSelection, computerSelection);
-      console.log(`Scoreboard after Round ${round}: You: ${humanScore}, Computer: ${computerScore}`);
-      console.log("------------------------------");
-    }
-  
-    
-    if (humanScore > computerScore) {
-      console.log("🏆 You win the game! Congratulations!");
-    } else if (humanScore < computerScore) {
-      console.log("🤖 You lost the game! Better luck next time.");
-    } else {
-      console.log("🤝 It's a tie!");
-    }
+  function disableButtons() {
+    document.getElementById("rock").disabled = true;
+    document.getElementById("paper").disabled = true;
+    document.getElementById("scissors").disabled = true;
   }
   
-  
 
-  playGame();
+ ["rock", "paper", "scissors"].forEach(choice => {
+  document.getElementById(choice).addEventListener("click", () => handleClick(choice));
+});
 
+ function handleClick(playerSelection) {
+   const computerSelection = getComputerChoice();
+   playRound(playerSelection, computerSelection);
+ }
   
+ const restartButton = document.getElementById("restart");
+
+function disableButtons() {
+  ["rock", "paper", "scissors"].forEach(id => document.getElementById(id).disabled = true);
+  restartButton.style.display = "inline";
+}
+
+restartButton.addEventListener("click", () => {
+  humanScore = 0;
+  computerScore = 0;
+  scoreDiv.textContent = "";
+  resultsDiv.textContent = "";
+  ["rock", "paper", "scissors"].forEach(id => {
+    const btn = document.getElementById(id);
+    btn.disabled = false;
+  });
+  restartButton.style.display = "none";
+});
+
