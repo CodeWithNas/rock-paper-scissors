@@ -43,12 +43,6 @@ function getComputerChoice() {
       disableButtons();
     }
   }
-
-  function disableButtons() {
-    document.getElementById("rock").disabled = true;
-    document.getElementById("paper").disabled = true;
-    document.getElementById("scissors").disabled = true;
-  }
   
 
  ["rock", "paper", "scissors"].forEach(choice => {
